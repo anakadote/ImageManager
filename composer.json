@@ -1,5 +1,5 @@
 {
-    "name": "anakadote/imagemanager",
+    "name": "anakadote/image-manager",
     "description": "Image manipulation package for Laravel.",
     "authors": [
         {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Anakadote\\Imagemanager\\": "src/"
+            "Anakadote\\ImageManager\\": "src/"
         }
     },
     "minimum-stability": "stable"

@@ -27,10 +27,24 @@ class ImageManager {
 		$this->errors = array();
 		
 		if( ! function_exists('gd_info')){
-			throw new Exception('GD Library required in package Anakadote\ImageManager.');
+			throw new \Exception('GD Library required in package Anakadote\ImageManager.');
 		}
 		
 		ini_set("memory_limit", "512M");
+	}
+	
+	
+	/**
+	 * Separate file name into name and paths	
+	 *
+	 * @param string $file
+	 */
+	private function parseFileName($file)
+	{
+		$this->file 			= $file;
+		$this->file_path 	= dirname($this->file);
+		$this->url_path 	= str_replace(public_path(), "", $this->file_path);
+		$this->filename 	= str_replace($this->file_path, "", $this->file);
 	}
 	
 	
@@ -46,22 +60,19 @@ class ImageManager {
 	public function getImagePath($file, $width, $height, $mode, $quality=90)
 	{	
 		
-		// Use error image if file cannot be found
-		if( empty($file) || ! file_exists($file) || is_dir($file)){
-			return $this->errorHandler();
-		}
-		
-		
 		// Separate file into name and paths		
-		$this->file 			= $file;
-		$this->file_path 	= dirname($this->file);
-		$this->url_path 	= str_replace(public_path(), "", $this->file_path);
-		$this->filename 	= str_replace($this->file_path, "", $this->file);
+		$this->parseFileName($file);
 		
 		$this->width = $width;
 		$this->height = $height;
 		$this->mode = $mode;
 		$this->quality = $quality;
+		
+		
+		// Use error image if file cannot be found
+		if( empty($file) || ! file_exists($file) || is_dir($file)){
+			return $this->errorHandler();
+		}
 		
 					
 		// File already there so don't bother creating it
@@ -133,9 +144,9 @@ class ImageManager {
 	 *
 	 * @return string
 	 */
-	public function getPath()
+	public function getPath($from_root=false)
 	{
-		return $this->getFolder() . "/" . $this->filename;
+		return $this->getFolder($from_root) . $this->filename;
 	}
 	
 	
@@ -144,21 +155,32 @@ class ImageManager {
 	 *
 	 * @return string
 	 */
-	protected function getFolder()
+	protected function getFolder($from_root=false)
 	{
-		$foldername = $this->url_path . $this->width . "-" . $this->height; // First make dimensions folder
-		if( ! file_exists($this->file_path . $foldername)){
-			if( ! mkdir($this->file_path . $foldername, 0777))
-				throw new Exception('Error creating directory');
+		$foldername = $this->width . "-" . $this->height; // First make dimensions folder
+		
+		if( ! file_exists($this->file_path . "/" . $foldername)){
+						
+			if( ! mkdir($this->file_path . "/" . $foldername, 0777)){
+				throw new \Exception('Error creating directory');
+			}
 		}
 		
 		$foldername = $foldername . "/" . $this->mode; // Then make mode folder
-		if( ! file_exists($this->file_path . $foldername)){ 
-			if( ! mkdir($this->file_path . $foldername, 0777))
-				throw new Exception('Error creating directory');
+		if( ! file_exists($this->file_path . "/" . $foldername)){ 
+			
+			if( ! mkdir($this->file_path . "/" . $foldername, 0777)){
+				throw new \Exception('Error creating directory');
+			}
 		}
 		
-		return $this->url_path . $this->width . "-" . $this->height . "/" . $this->mode;
+		
+		if($from_root){
+			return $this->file_path . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
+		
+		} else {
+			return $this->url_path . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
+		}
 	}
 	
 	
@@ -202,6 +224,8 @@ class ImageManager {
 				
 			} else { // Original is square
 				$this->mode = "fit";
+				
+				return $this->resize();
 			}
 			
 			// Adjust if the crop width is less than the requested width to avoid black lines
@@ -249,7 +273,7 @@ class ImageManager {
 				$height = $orig_height;
 			}
 		} else {
-			throw new Exception('Invalid mode.');
+			throw new \Exception('Invalid mode: ' . $this->mode);
 		}
 		
 		
@@ -377,14 +401,20 @@ class ImageManager {
 	
 	/** 
 	 * Delete an image and all generated child images
+	 *
+	 * @param string $file
 	 */
-	public function deleteImage($filename, $url_path)
-	{		
-		$dir = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->public_path.$url_path));
+	public function deleteImage($file)
+	{	
+		
+		// Separate file into name and paths		
+		$this->parseFileName($file);
+		
+		$dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->file_path));
 		foreach($dir as $file){			
-			$parts = explode('/', str_replace($this->public_path.$url_path, '', $file));
+			$parts = explode('/', str_replace($this->file_path, '', $file));
 			
-			if($filename == $parts[ count($parts)-1 ]){
+			if($this->filename == $parts[ count($parts)-1 ]){
 				unlink($file);
 			}
 		}
@@ -485,13 +515,10 @@ class ImageManager {
 	 */
 	protected function errorHandler()
 	{
-		$this->file = public_path() . '/packages/anakadote/imagemanager/' . $this->error_filename;
-		
+		$this->file = public_path() . '/packages/anakadote/image-manager/' . $this->error_filename;
+						
 		if(file_exists($this->file)){
-			$this->image_info = getimagesize($this->file);
-			$this->image = imagecreatefromjpeg($this->file);
-			$this->resize();
-			$this->save();
+			return $this->getImagePath($this->file, $this->width, $this->height, $this->mode, $this->quality);
 		
 		} else {
 			$this->errors[] = 'Error image not found.';	

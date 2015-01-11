@@ -1,4 +1,4 @@
-<?php namespace Anakadote\Imagemanager;
+<?php namespace Anakadote\ImageManager;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +18,7 @@ class ImageManagerServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('anakadote/imagemanager');
+		$this->package('anakadote/image-manager');
 	}
 
 	/**
@@ -28,7 +28,19 @@ class ImageManagerServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		
+		$this->app['image-manager'] = $this->app->share(function($app)
+		{
+			return new ImageManager;
+		});
+		
+		
+		// Register Facade
+		$this->app->booting(function()
+		{
+			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+			$loader->alias('ImageManager', 'Anakadote\ImageManager\Facades\ImageManager');
+		});
 	}
 
 	/**
