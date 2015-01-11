@@ -12,11 +12,11 @@ Next, update Composer from the Terminal:
 
     composer update
 
-Next, use artisan move the package assets to the public directory, also from the Terminal:
+Next, use artisan to move the package assets to the public directory, also from the Terminal:
 
     php artisan asset:publish anakadote/image-manager
 
-The final step is to add the service provider. Open `config/app.php`, and add a new item to the providers array.
+The final step is to add the service provider. Open `config/app.php` and add a new item to the providers array.
 
     'Anakadote\ImageManager\ImageManagerServiceProvider'
 
