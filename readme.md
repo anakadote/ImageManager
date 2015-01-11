@@ -32,7 +32,7 @@ This package is accessible via a Laravel Facade so to use simply call the getIma
 
 The getImagePath() method has five parameters, the first four of which are required:
 
-1. Filename *(string)* The fully qualified name of image file.
+1. Filename *(string)* The fully qualified name of image file. The file must reside in your app's `public` directory. You'll need to grant write access by the web server to the `public` directory and its children.
 
 2. Width *(integer)* Desired width of the image.
 
