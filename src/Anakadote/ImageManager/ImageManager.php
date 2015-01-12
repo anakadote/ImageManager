@@ -34,20 +34,6 @@ class ImageManager {
 	}
 	
 	
-	/**
-	 * Separate file name into name and paths	
-	 *
-	 * @param string $file
-	 */
-	private function parseFileName($file)
-	{
-		$this->file 			= $file;
-		$this->file_path 	= dirname($this->file);
-		$this->url_path 	= str_replace(public_path(), "", $this->file_path);
-		$this->filename 	= str_replace($this->file_path, "", $this->file);
-	}
-	
-	
 	/** 
 	 * Resize image according to supplied parameters
 	 *
@@ -142,6 +128,7 @@ class ImageManager {
 	/** 
 	 * Get full image path including filename
 	 *
+	 * @param bool $from_root If true, return fully qualified path. If false, return public path to image
 	 * @return string
 	 */
 	public function getPath($from_root=false)
@@ -185,13 +172,27 @@ class ImageManager {
 	
 	
 	/** 
-	 * Get array of errors
+	 * Get an array of errors
 	 *
 	 * @return array
 	 */
 	public function getErrors()
 	{
 		return $this->errors;	
+	}
+	
+	
+	/**
+	 * Separate file name into name and paths	
+	 *
+	 * @param string $file
+	 */
+	private function parseFileName($file)
+	{
+		$this->file 			= $file;
+		$this->file_path 	= dirname($this->file);
+		$this->url_path 	= str_replace(public_path(), "", $this->file_path);
+		$this->filename 	= str_replace($this->file_path, "", $this->file);
 	}
 	
 	
@@ -422,7 +423,7 @@ class ImageManager {
 	
 	
 	/** 
-	 * Set the $_image as an alias of $_temp, then unset $_temp
+	 * Set the $image as an alias of $temp, then unset $temp
 	 */
 	protected function sync()
 	{
