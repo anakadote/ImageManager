@@ -23,7 +23,12 @@ The final step is to add the service provider. Open `config/app.php` and add a n
 
 ## Usage
 
-This package is accessible via a Laravel Facade so to use simply call the getImagePath() method on the Facade:
+This package is accessible via a Laravel Facade so to use simply call its methods on the Facade "ImageManager".
+
+
+### getImagePath($filename, $width, $height, $mode, $quality=90)
+
+Resize or crop an image and get the newly generated image's web path.
 
 ```php
 <img src="{{ ImageManager::getImagePath($image->filename, 250, 200, 'crop') }}" alt="">
@@ -32,7 +37,7 @@ This package is accessible via a Laravel Facade so to use simply call the getIma
 
 The getImagePath() method has five parameters, the first four of which are required:
 
-1. Filename *(string)* The fully qualified name of image file. The file must reside in your app's `public` directory. You'll need to grant write access by the web server to the `public` directory and its children.
+1. File Name *(string)* The fully qualified name of image file. The file must reside in your app's `public` directory. You'll need to grant write access by the web server to the `public` directory and its children.
 
 2. Width *(integer)* Desired width of the image.
 
@@ -44,3 +49,20 @@ The getImagePath() method has five parameters, the first four of which are requi
   4. **fit-y** - Fit to the given height while maintaining aspect ratio
 
 5. Image Quality - *(integer, 0 - 100)* Default value is 90
+
+
+***
+
+
+### deleteImage($filename)
+
+Delete an image including all resized and/or cropped images generated from it.
+
+```php
+<?php
+
+ImageManager::deleteImage($image->filename);
+
+```
+
+The deleteImage() method has a single parameter which is the fully qualified name of the original image file. This method will recursively delete all generated images from the original image file.

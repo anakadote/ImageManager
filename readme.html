@@ -26,7 +26,11 @@
 
 <h2>Usage</h2>
 
-<p>This package is accessible via a Laravel Facade so to use simply call the getImagePath() method on the Facade:</p>
+<p>This package is accessible via a Laravel Facade so to use simply call its methods on the Facade &ldquo;ImageManager&rdquo;.</p>
+
+<h3>getImagePath($filename, $width, $height, $mode, $quality=90)</h3>
+
+<p>Resize or crop an image and get the newly generated image&rsquo;s web path.</p>
 
 <p>```php
 <img src="{{ ImageManager::getImagePath($image->filename, 250, 200, &lsquo;crop&rsquo;) }}&ldquo; alt=&rdquo;&ldquo;></p>
@@ -36,7 +40,7 @@
 <p>The getImagePath() method has five parameters, the first four of which are required:</p>
 
 <ol>
-<li><p>Filename <em>(string)</em> The fully qualified name of image file. The file must reside in your app&rsquo;s <code>public</code> directory. You&rsquo;ll need to grant write access by the web server to the <code>public</code> directory and its children.</p></li>
+<li><p>File Name <em>(string)</em> The fully qualified name of image file. The file must reside in your app&rsquo;s <code>public</code> directory. You&rsquo;ll need to grant write access by the web server to the <code>public</code> directory and its children.</p></li>
 <li><p>Width <em>(integer)</em> Desired width of the image.</p></li>
 <li><p>Height <em>(integer)</em> Desired height of the image.</p></li>
 <li>Output Mode <em>(string)</em> The output mode. Options are:</li>
@@ -47,3 +51,18 @@
 <li><p>Image Quality - <em>(integer, 0 - 100)</em> Default value is 90</p></li>
 </ol>
 
+
+<hr />
+
+<h3>deleteImage($filename)</h3>
+
+<p>Delete an image including all resized and/or cropped images generated from it.</p>
+
+<p>```php
+&lt;?php</p>
+
+<p>ImageManager::deleteImage($image->filename);</p>
+
+<p>```</p>
+
+<p>The deleteImage() method has a single parameter which is the fully qualified name of the original image file. This method will recursively delete all generated images from the original image file.</p>
