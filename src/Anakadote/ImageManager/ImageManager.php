@@ -412,13 +412,15 @@ class ImageManager {
 		$this->parseFileName($file);
 		
 		$dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->file_path));
-		foreach($dir as $file){			
-			$parts = explode('/', str_replace($this->file_path, '', $file));
+		foreach($dir as $dir_file){			
+			$parts = explode('/', str_replace($this->file_path, '', $dir_file));
 			
 			if($this->filename == $parts[ count($parts)-1 ]){
-				unlink($file);
+				unlink($dir_file);
 			}
 		}
+		
+		unlink($file);
 	}
 	
 	
