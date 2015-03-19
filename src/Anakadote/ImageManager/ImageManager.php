@@ -369,7 +369,7 @@ class ImageManager {
 				if($mirror) $img = $this->mirrorImage($img);
 				
 				$this->image = str_replace('.jpg', "-O$orientation.jpg", $this->file); 
-				imagejpeg($img, $this->filename, 95);
+				imagejpeg($img, $this->getPath(true), $this->quality);
 			}
 		}
 	}
@@ -420,7 +420,7 @@ class ImageManager {
 			}
 		}
 		
-		unlink($file);
+		@unlink($file);
 	}
 	
 	
