@@ -31,7 +31,7 @@ This package is accessible via a Laravel Facade so to use simply call its method
 Resize or crop an image and get the newly generated image's web path.
 
 ```php
-<img src="{{ ImageManager::getImagePath($image->filename, 250, 200, 'crop') }}" alt="">
+<img src="{{ ImageManager::getImagePath( public_path() . '/img/' . $image->filename, 250, 200, 'crop' ) }}" alt="">
 
 ```
 
@@ -61,7 +61,7 @@ Delete an image including all resized and/or cropped images generated from it.
 ```php
 <?php
 
-ImageManager::deleteImage($image->filename);
+ImageManager::deleteImage( public_path() . '/img/' . $image->filename );
 
 ```
 
