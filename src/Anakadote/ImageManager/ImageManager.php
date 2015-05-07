@@ -414,8 +414,8 @@ class ImageManager {
 		$dir = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->file_path));
 		foreach($dir as $dir_file){			
 			$parts = explode('/', str_replace($this->file_path, '', $dir_file));
-			
-			if($this->filename == $parts[ count($parts)-1 ]){
+						
+			if($this->filename == "/" . $parts[ count($parts)-1 ]){
 				unlink($dir_file);
 			}
 		}
