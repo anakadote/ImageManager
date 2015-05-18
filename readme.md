@@ -1,6 +1,14 @@
 # Image Resizing and Cropping Package for Laravel 4
 
-This Laravel package provides a convenient way of resizing and cropping images.
+This Laravel 4 package provides a convenient way of resizing and cropping images.
+
+
+## Laravel 5
+
+If you're using Laravel 5, then [use this package instead](https://github.com/anakadote/ImageManager-for-Laravel-5).
+
+
+## Installation
 
 Begin by installing this package through Composer. Edit your project's `composer.json` file to require `anakadote/image-manager`.
 
