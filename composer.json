@@ -1,6 +1,6 @@
 {
     "name": "anakadote/image-manager",
-    "description": "Image resizing and cropping package for Laravel 4.",
+    "description": "Image resizing and cropping package for Laravel.",
     "authors": [
         {
             "name": "Taylor Collins",
@@ -11,8 +11,7 @@
 	    "laravel", "images"
     ],
     "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "4.2.*"
+        "php": ">=5.4.0"
     },
     "autoload": {
         "psr-0": {
