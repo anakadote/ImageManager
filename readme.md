@@ -1,4 +1,4 @@
-# Image Resizing and Cropping Package for Laravel
+# Image Resizing and Cropping Package for Laravel 4
 
 This Laravel package provides a convenient way of resizing and cropping images.
 
