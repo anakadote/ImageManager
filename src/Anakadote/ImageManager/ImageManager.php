@@ -139,7 +139,7 @@ class ImageManager
         } else {
             $this->save();
         }
-                    
+        
         return $this->getPath(false, $format);
     }
     
@@ -246,9 +246,8 @@ class ImageManager
                 $height = ceil($xRatio * $origHeight);
                 
             } else { // Original is square.
-                $this->mode = 'fit';
-                
-                return $this->resize();
+                $width = $maxWidth;
+                $height = $maxWidth;
             }
             
             // Adjust if the crop width is less than the requested width to avoid black lines.
