@@ -2,6 +2,7 @@
 
 namespace Anakadote\ImageManager;
 
+use enshrined\svgSanitize\Sanitizer as SvgSanitizer;
 use Exception;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -71,9 +72,19 @@ class ImageManager
             return $this->getPath(false, $format);
         }
 
-        // SVG? Simply return the URL path to the image.
+        // SVG? 
+        // Create a sanitized copy and return the URL path.
         if ($this->getExtension($this->filename) === 'svg') {
-            return $this->urlPath . $this->filename;
+
+            $sanitizer = new SvgSanitizer;
+            $dirtySVG = file_get_contents($this->file);
+            $cleanSVG = $sanitizer->sanitize($dirtySVG);
+
+            file_put_contents($this->getPath(true, $format), $cleanSVG);
+
+            chmod($this->getPath(true, $format), 0777);
+
+            return $this->getPath(false, $format);
         }
         
         // Make sure file type is supported.
