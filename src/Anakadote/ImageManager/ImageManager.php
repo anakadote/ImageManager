@@ -180,28 +180,37 @@ class ImageManager
      */
     protected function getFolder($fromRoot = false)
     {
+        $cacheDir = "cache";
+
+        if (! file_exists($this->filePath . "/" . $cacheDir)) {
+
+            if (! mkdir($this->filePath . "/" . $cacheDir, 0777)) {
+                throw new Exception('Error creating directory');
+            }
+        }
+
         $foldername = $this->width . "-" . $this->height; // First make dimensions folder.
-        
-        if (! file_exists($this->filePath . "/" . $foldername)) {
-            
-            if (! mkdir($this->filePath . "/" . $foldername, 0777)) {
+
+        if (! file_exists($this->filePath . "/" . $cacheDir . "/" . $foldername)) {
+
+            if (! mkdir($this->filePath . "/" . $cacheDir . "/" . $foldername, 0777)) {
                 throw new Exception('Error creating directory');
             }
         }
-        
+
         $foldername = $foldername . "/" . $this->mode; // Then make mode folder.
-        if (! file_exists($this->filePath . "/" . $foldername)) { 
-            
-            if (! mkdir($this->filePath . "/" . $foldername, 0777)) {
+        if (! file_exists($this->filePath . "/" . $cacheDir . "/" . $foldername)) {
+
+            if (! mkdir($this->filePath . "/" . $cacheDir . "/" . $foldername, 0777)) {
                 throw new Exception('Error creating directory');
             }
         }
-        
+
         if ($fromRoot) {
-            return $this->filePath . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
+            return $this->filePath . "/" . $cacheDir . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
         }
-        
-        return $this->urlPath . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
+
+        return $this->urlPath . "/" . $cacheDir . "/" . $this->width . "-" . $this->height . "/" . $this->mode;
     }
     
     /** 
