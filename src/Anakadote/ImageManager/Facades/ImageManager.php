@@ -1,11 +1,11 @@
 <?php
 
 namespace Anakadote\ImageManager\Facades;
- 
+
 use Illuminate\Support\Facades\Facade;
- 
+
 class ImageManager extends Facade {
- 
+
     /**
      * Get the registered name of the component.
      *
