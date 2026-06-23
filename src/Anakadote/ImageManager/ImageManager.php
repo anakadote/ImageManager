@@ -655,7 +655,9 @@ class ImageManager
      */
     public function __destruct()
     {
-        if (isset($this->image)) imageDestroy($this->image);
-        if (isset($this->temp)) imageDestroy($this->temp);
+        if (PHP_VERSION_ID < 80000) {
+            if (isset($this->image)) imageDestroy($this->image);
+            if (isset($this->temp)) imageDestroy($this->temp);
+        }
     }
 }
